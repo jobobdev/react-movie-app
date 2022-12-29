@@ -1,37 +1,48 @@
 import { useState, useEffect } from "react";
 
 function App() {
-  const [toDo, setToDo] = useState("");
-  const [toDos, setToDos] = useState([]);
-  const onChange = (e) => {
-    setToDo(e.target.value);
+  const [loading, setLoading] = useState(true);
+  const [coins, setCoins] = useState([]);
+  const [getCoins, setGetCoins] = useState("");
+  const [dollars, setDollars] = useState(0);
+  const writeDollars = (e) => {
+    setDollars(e.target.value);
   };
-  const onSubmit = (e) => {
-    e.preventDefault();
-    if (toDo === "") {
-      return; //kill the function
-    }
-    setToDo(""); //empty the input
-    setToDos((currentArray) => [toDo, ...currentArray]); //...ARRAYNAME gives you the elements of that array
-  }; //toDo === 새로운 toDo element we input -> we put that element into a new array and combine it with unpacked 'currentArray'
-  console.log(toDos);
-  console.log(toDos.map((item, index) => <li key={index}>{item}</li>));
+  useEffect(() => {
+    fetch("https://api.coinpaprika.com/v1/tickers")
+      .then((response) => response.json())
+      .then((json) => {
+        setCoins(json);
+        setLoading(false);
+      });
+  }, []);
+  const onSelect = (e) => {
+    setGetCoins(e.target.value);
+  };
   return (
     <div>
-      <h1>My To Dos ({toDos.length})</h1>
-      <form onSubmit={onSubmit}>
+      <h1>Coins! {loading ? "" : `(${coins.length})`}</h1>
+      {loading ? (
+        <strong>Loading...</strong>
+      ) : (
+        <select onChange={onSelect}>
+          {coins.map((coin, id) => (
+            <option key={id} value={coin.quotes.USD.price}>
+              {coin.name} ({coin.symbol}): ${coin.quotes.USD.price.toFixed(3)}
+            </option>
+          ))}
+        </select>
+      )}
+      <div>
+        <label htmlFor="dollar">Your Dollars</label>
         <input
-          value={toDo}
-          onChange={onChange}
-          type="text"
-          placeholder="Write your to do..."
+          onChange={writeDollars}
+          id="dollar"
+          type="number"
+          value={dollars}
         />
-        <button>Add To Do</button>
-      </form>
-      <hr />
-      {toDos.map((item, index) => (
-        <li key={index}>{item}</li>
-      ))}
+        <div>Are this much coins : {(dollars / getCoins).toFixed(3)}</div>
+      </div>
     </div>
   );
 }
