@@ -1,20 +1,37 @@
 import { useState, useEffect } from "react";
 
 function App() {
-  const [showing, setShowing] = useState(false);
-  function Hello() {
-    useEffect(() => {
-      console.log("Created :)");
-      return () => console.log("Destroyed :(");
-    }, []);
-    return <h1>Hello</h1>;
-  }
-
-  const onClick = () => setShowing((prev) => !prev);
+  const [toDo, setToDo] = useState("");
+  const [toDos, setToDos] = useState([]);
+  const onChange = (e) => {
+    setToDo(e.target.value);
+  };
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (toDo === "") {
+      return; //kill the function
+    }
+    setToDo(""); //empty the input
+    setToDos((currentArray) => [toDo, ...currentArray]); //...ARRAYNAME gives you the elements of that array
+  }; //toDo === 새로운 toDo element we input -> we put that element into a new array and combine it with unpacked 'currentArray'
+  console.log(toDos);
+  console.log(toDos.map((item, index) => <li key={index}>{item}</li>));
   return (
     <div>
-      <button onClick={onClick}>{showing ? "Hide" : "Show"}</button>
-      {showing ? <Hello /> : null}
+      <h1>My To Dos ({toDos.length})</h1>
+      <form onSubmit={onSubmit}>
+        <input
+          value={toDo}
+          onChange={onChange}
+          type="text"
+          placeholder="Write your to do..."
+        />
+        <button>Add To Do</button>
+      </form>
+      <hr />
+      {toDos.map((item, index) => (
+        <li key={index}>{item}</li>
+      ))}
     </div>
   );
 }
@@ -37,3 +54,8 @@ export default App;
 
 // useEffect를 컴포넌트를 create할 때 사용한다면,
 // react는 컴포넌트를 destroy할 때에도 함수를 실행 하게 해준다.
+// useEffect의 첫 인자인 함수 내에 함수F를 리턴해주면 그 F는 컴포넌트가 destroy가 될 때 실행된다.
+// 언제 쓰느냐? 분석결과 API 요청허거나, 어떤 컴포넌트가 사라졌을 때 특정한 event listner를 사라지게 하는 등 사용 가능하다.
+
+//.map(함수)은 모든 item에대해 함수를 적용한다
+//[].map((item) => item.toUpperCase) 처럼 map 안에 있는 첫 인자는 []안의 item을 가리킨다
