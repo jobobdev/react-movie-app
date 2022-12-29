@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script
+    src="https://unpkg.com/react@18/umd/react.development.js"
+    crossorigin
+  ></script>
+  <script
+    src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    crossorigin
+  ></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+  <script type="text/babel">
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    function Btn({ innerText, big }) {
+      //props는 obj이므로 props 자체로 받아오지 않고 바로 내용물을 받아와도 됨 props.innerText === { innerText }
+      return (
+        <button
+          style={{
+            backgroundColor: "tomato",
+            color: "white",
+            padding: "10px 20px",
+            border: 0,
+            borderRadius: 10,
+            fontSize: big ? 18 : 16,
+          }}
+        >
+          {innerText}
+        </button>
+      );
+    }
+    function App() {
+      return (
+        <div>
+          <Btn innerText="Save Changes" big={true} />
+          <Btn innerText="Continue" />
+        </div>
+      );
+    }
+
+    root.render(<App />);
+  </script>
+</html>

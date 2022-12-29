@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script
+    src="https://unpkg.com/react@18/umd/react.development.js"
+    crossorigin
+  ></script>
+  <script
+    src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    crossorigin
+  ></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+  <script type="text/babel">
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    const Btn = ({ text, changeValue }) => {
+      console.log(text, "was rendered");
+      return (
+        <button
+          onClick={changeValue}
+          style={{
+            backgroundColor: "tomato",
+            color: "white",
+            padding: "10px 20px",
+            border: 0,
+            borderRadius: 10,
+          }}
+        >
+          {text}
+        </button>
+      );
+    };
+    const MemorizedBtn = React.memo(Btn);
+    const App = () => {
+      const [value, setValue] = React.useState("Save Changes");
+      const changeValue = () => {
+        setValue("Revert Changes");
+      };
+
+      return (
+        <div>
+          <MemorizedBtn text={value} changeValue={changeValue} />
+          <MemorizedBtn text="Continue" />
+        </div>
+      );
+    };
+    root.render(<App />);
+  </script>
+</html>
