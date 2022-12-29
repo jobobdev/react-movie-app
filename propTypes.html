@@ -17,12 +17,15 @@
     src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
     crossorigin
   ></script>
+  <script src="
+  https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
   <script type="text/babel">
     const root = ReactDOM.createRoot(document.getElementById("root"));
-    function Btn({ innerText }) {
-      //props는 obj이므로 props 자체로 받아오지 않고 바로 내용물을 받아와도 됨 props.innerText === { innerText }
+    const Btn = ({ text, fontSize = 18 }) => {
+      //default value 를 줄 수 있음 fontSize 처럼 required 가 아닌 경우에 사용하면 좋음.
+      console.log(text, "was rendered");
       return (
         <button
           style={{
@@ -31,22 +34,26 @@
             padding: "10px 20px",
             border: 0,
             borderRadius: 10,
+            fontSize,
           }}
         >
-          {innerText}
+          {text}
         </button>
       );
-    }
-    const MemorizedBtn = React.memo(btn);
-    function App() {
+    };
+    Btn.propTypes = {
+      text: PropTypes.string.isRequired,
+      fontSize: PropTypes.number,
+    };
+    // https://reactjs.org/docs/typechecking-with-proptypes.html#proptypes 종류들 확인
+    const App = () => {
       return (
         <div>
-          <MemorizedBtn innerText="Save Changes" />
-          <MemorizedBtn innerText="Continue" />
+          <Btn text="Save Changes" fontSize={18} />
+          <Btn text="Continue" />
         </div>
       );
-    }
-
+    };
     root.render(<App />);
   </script>
 </html>
