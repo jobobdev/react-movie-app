@@ -1,38 +1,15 @@
-import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Detail from "./routes/Detail";
+import Home from "./routes/Home";
 
 function App() {
-  const [toDo, setToDo] = useState("");
-  const [toDos, setToDos] = useState([]);
-  const onChange = (e) => {
-    setToDo(e.target.value);
-  };
-  const onSubmit = (e) => {
-    e.preventDefault();
-    if (toDo === "") {
-      return; //kill the function
-    }
-    setToDo(""); //empty the input
-    setToDos((currentArray) => [toDo, ...currentArray]); //...ARRAYNAME gives you the elements of that array
-  }; //toDo === 새로운 toDo element we input -> we put that element into a new array and combine it with unpacked 'currentArray'
-  console.log(toDos);
-  console.log(toDos.map((item, index) => <li key={index}>{item}</li>));
   return (
-    <div>
-      <h1>My To Dos ({toDos.length})</h1>
-      <form onSubmit={onSubmit}>
-        <input
-          value={toDo}
-          onChange={onChange}
-          type="text"
-          placeholder="Write your to do..."
-        />
-        <button>Add To Do</button>
-      </form>
-      <hr />
-      {toDos.map((item, index) => (
-        <li key={index}>{item}</li>
-      ))}
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/movie/:id" element={<Detail />}></Route>
+        <Route path="/" element={<Home />}></Route>
+      </Routes>
+    </Router>
   );
 }
 
@@ -59,3 +36,5 @@ export default App;
 
 //.map(함수)은 모든 item에대해 함수를 적용한다
 //[].map((item) => item.toUpperCase) 처럼 map 안에 있는 첫 인자는 []안의 item을 가리킨다
+
+//react-router-dom은 항상 공식 웹사이트에서 최신 버전을 확인하고 그 안내를 따르자. 사용법이 강의와 달랐음.
