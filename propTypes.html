@@ -20,11 +20,11 @@
   <script src="
   https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-
+  <!-- Prop types는 잘못된 형태의 type을 Property에 전달하는 걸 방지할 수 있도록 type을 체크할 수 있게 해준다. -->
   <script type="text/babel">
     const root = ReactDOM.createRoot(document.getElementById("root"));
-    const Btn = ({ text, fontSize = 18 }) => {
-      //default value 를 줄 수 있음 fontSize 처럼 required 가 아닌 경우에 사용하면 좋음.
+    const Btn = ({ text, fontSize = 22 }) => {
+      //default value 를 줄 수 있음 fontSize 처럼 required 가 아닌 경우에 사용하면 좋음. fontsize가 지정되지 않은 두번째 버튼에만 적용됨.
       console.log(text, "was rendered");
       return (
         <button

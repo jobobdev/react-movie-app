@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    const root = document.getElementById("root");
+
+    function App() {
+      const [counter, setCounter] = React.useState(0); // useState는 [변수, 변수를 건드는 함수(modifier)]를 제공한다. 변수는 우리가 default value를 지정할 수 있다.
+      const onClick = () => {
+        // setCounter(counter + 1); //modifier는 알아서 rerendering을 일으키고 자신의 값으로 default vaule를 변경한다.
+        setCounter((current) => current + 1); //SAFER, 다른 곳에서 값이 변경될 경우가 잦으므로, 현재의 값을 가지고 와서 업데이트 하는 형식
+      };
+      return (
+        <div>
+          <h3>Total clicks: {counter}</h3>
+          <button onClick={onClick}>Click Me</button>
+        </div>
+      );
+    }
+    ReactDOM.createRoot(root).render(<App />);
+  </script>
+</html>
